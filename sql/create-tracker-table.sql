@@ -1,7 +1,0 @@
-CREATE TABLE messages (
-  id SERIAL PRIMARY KEY,
-  project_id UUID NOT NULL,
-  user_id UUID NOT NULL,
-  message TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
