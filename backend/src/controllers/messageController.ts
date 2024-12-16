@@ -32,7 +32,7 @@ export const getMessagesByProjectId = async (req: Request, res: Response) => {
       FROM messages
       JOIN users ON messages.user_id = users.id
       WHERE messages.project_id = $1
-      ORDER BY messages.created_at DESC
+      ORDER BY messages.created_at asc
       `,
       [projectId]
     );
@@ -52,7 +52,7 @@ export const getAllMessages = async (req: Request, res: Response) => {
       FROM messages
       JOIN users ON messages.user_id = users.id
       JOIN projects ON messages.project_id = projects.id
-      ORDER BY messages.created_at DESC
+      ORDER BY messages.created_at asc
       `
     );
     res.json(messages.rows);

@@ -26,7 +26,7 @@ export const createUser = async (req: Request, res: Response) => {
 // Get All Users
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
+    const result = await pool.query('SELECT * FROM users ORDER BY created_at ASC');
     res.status(200).json(result.rows);
   } catch (err) {
     console.error('Error fetching users:', err);
