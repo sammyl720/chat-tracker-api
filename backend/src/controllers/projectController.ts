@@ -1,7 +1,6 @@
-// src/controllers/projectController.ts
 import { Request, Response } from 'express';
 import { pool } from '../db';
-import { Project } from '../models/projectModel';
+import { sendSSE } from './sseController';
 
 // Create a new Project
 export const createProject = async (req: Request, res: Response) => {
@@ -16,6 +15,16 @@ export const createProject = async (req: Request, res: Response) => {
       'INSERT INTO projects (name) VALUES ($1) RETURNING *',
       [name]
     );
+    // Broadcast the new project to all SSE clients
+    sendSSE({
+      event: 'new-project',
+      data: {
+        id: result.rows[0].id,
+        name: result.rows[0].name,
+        created_at: result.rows[0].created_at,
+      },
+    });
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Error creating project:', err);
