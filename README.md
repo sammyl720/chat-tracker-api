@@ -1,59 +1,59 @@
-# Chat Tracker API
+# Chat Tracker
 
-![Chat Tracker API](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen) ![Docker](https://img.shields.io/badge/docker-%3E%3D20.10.0-blue) ![PostgreSQL](https://img.shields.io/badge/postgresql-%3E%3D12.0-orange)
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-  - [1. Clone the Repository](#1-clone-the-repository)
-  - [2. Configure Environment Variables](#2-configure-environment-variables)
-  - [3. Docker Setup](#3-docker-setup)
-- [Running the Application](#running-the-application)
-- [API Documentation](#api-documentation)
-  - [Projects](#projects)
-  - [Users](#users)
-  - [Messages](#messages)
-- [Database Initialization](#database-initialization)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+**Chat Tracker** is a full-stack application designed to manage projects, users, and messages efficiently. It comprises a **Node.js** and **Express** backend API, a modern **React** frontend built with **Vite**, and a **PostgreSQL** database. The entire application is containerized using **Docker**, ensuring seamless deployment and scalability.
 
 ---
 
-## Overview
+## Table of Contents
 
-The **Chat Tracker API** is a RESTful service built with **Node.js**, **TypeScript**, and **Express**, backed by a **PostgreSQL** database. It allows you to manage **Projects** and **Users**, and track **Chat Completion Messages** associated with specific projects and users. The application is containerized using **Docker** and orchestrated with **Docker Compose** for seamless deployment and scalability.
+1. [Features](#features)
+2. [Technologies Used](#technologies-used)
+3. [Project Structure](#project-structure)
+4. [Prerequisites](#prerequisites)
+5. [Installation](#installation)
+6. [Environment Variables](#environment-variables)
+7. [Running the Application](#running-the-application)
+   - [Using Docker Compose](#using-docker-compose)
+   - [Development Mode](#development-mode)
+8. [Frontend Overview](#frontend-overview)
+   - [Available Components](#available-components)
+9. [Backend Overview](#backend-overview)
+   - [API Endpoints](#api-endpoints)
+10. [Contributing](#contributing)
+11. [License](#license)
+12. [Acknowledgements](#acknowledgements)
 
 ---
 
 ## Features
 
-- **CRUD Operations** for:
-  - **Projects**: Create, Read, Update, Delete projects.
-  - **Users**: Create, Read, Update, Delete users.
-  - **Messages**: Create, Read, Update, Delete chat messages linked to projects and users.
-- **Dockerized Setup**: Easily deploy the application and PostgreSQL database using Docker.
-- **TypeScript**: Strongly typed JavaScript for enhanced developer experience and code reliability.
-- **PostgreSQL**: Robust relational database for data persistence.
-- **Express.js**: Fast and minimalist web framework for Node.js.
+- **Projects Management:** Create, read, update, and delete projects.
+- **Users Management:** Manage user profiles with CRUD operations.
+- **Messages Management:** Handle messages linked to specific projects and users.
+- **Responsive UI:** Intuitive and responsive frontend built with React and Material-UI.
+- **Containerization:** Dockerized setup for easy deployment and scalability.
+- **Type Safety:** Strong typing with TypeScript across both frontend and backend.
+- **Environment Configuration:** Secure management of environment variables.
 
 ---
 
 ## Technologies Used
 
-- **Node.js** (v14 or later)
-- **TypeScript**
-- **Express.js**
-- **PostgreSQL** (v12 or later)
-- **Docker**
-- **Docker Compose**
-- **pg**: PostgreSQL client for Node.js
-- **dotenv**: Loads environment variables from `.env` file
+- **Frontend:**
+  - [React](https://reactjs.org/) with [Vite](https://vitejs.dev/) for fast development.
+  - [TypeScript](https://www.typescriptlang.org/) for type safety.
+  - [Material-UI (MUI)](https://mui.com/) for UI components and styling.
+  - [Axios](https://axios-http.com/) for HTTP requests.
+
+- **Backend:**
+  - [Node.js](https://nodejs.org/) with [Express](https://expressjs.com/) framework.
+  - [TypeScript](https://www.typescriptlang.org/) for type safety.
+  - [PostgreSQL](https://www.postgresql.org/) as the relational database.
+  - [pg](https://node-postgres.com/) for PostgreSQL client.
+
+- **DevOps:**
+  - [Docker](https://www.docker.com/) for containerization.
+  - [Docker Compose](https://docs.docker.com/compose/) for orchestrating multi-container applications.
 
 ---
 
@@ -61,30 +61,46 @@ The **Chat Tracker API** is a RESTful service built with **Node.js**, **TypeScri
 
 ```
 chat-tracker-api/
-├── src/
-│   ├── controllers/
-│   │   ├── messageController.ts
-│   │   ├── projectController.ts
-│   │   └── userController.ts
-│   ├── models/
-│   │   ├── messageModel.ts
-│   │   ├── projectModel.ts
-│   │   └── userModel.ts
-│   ├── routes/
-│   │   ├── messageRoutes.ts
-│   │   ├── projectRoutes.ts
-│   │   └── userRoutes.ts
-│   ├── db/
-│   │   └── index.ts
-│   ├── app.ts
-│   └── server.ts
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Messages/
+│   │   │   │   └── MessageList.tsx
+│   │   │   ├── Projects/
+│   │   │   │   └── ProjectList.tsx
+│   │   │   └── Users/
+│   │   │       └── UserList.tsx
+│   │   ├── services/
+│   │   │   └── api.ts
+│   │   ├── types.ts
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── ...
+│   ├── nginx.conf
+│   ├── Dockerfile
+│   ├── vite.config.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── db/
+│   │   ├── app.ts
+│   │   └── server.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── ...
 ├── db-init/
 │   └── init.sql
 ├── .env
+├── docker-compose.yml
+├── Dockerfile
 ├── package.json
 ├── tsconfig.json
-├── Dockerfile
-├── docker-compose.yml
 └── README.md
 ```
 
@@ -92,33 +108,57 @@ chat-tracker-api/
 
 ## Prerequisites
 
-Before getting started, ensure you have the following installed on your machine:
+Before setting up the project, ensure you have the following installed on your machine:
 
-- **[Node.js](https://nodejs.org/en/download/)** (v14 or later)
-- **[Docker](https://docs.docker.com/get-docker/)**
-- **[Docker Compose](https://docs.docker.com/compose/install/)**
-- **[Git](https://git-scm.com/downloads)** (optional, for version control)
+- [Node.js](https://nodejs.org/en/) (v14 or later)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ---
 
 ## Installation
 
-### 1. Clone the Repository
+1. **Clone the Repository**
 
-Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/yourusername/chat-tracker-api.git
+   cd chat-tracker-api
+   ```
 
-```bash
-git clone https://github.com/yourusername/chat-tracker-api.git
-cd chat-tracker-api
-```
+2. **Navigate to the Frontend Directory**
 
-> **Note:** Replace `yourusername` with your actual GitHub username if applicable.
+   ```bash
+   cd frontend
+   ```
 
-### 2. Configure Environment Variables
+3. **Install Frontend Dependencies**
 
-Create a `.env` file in the root directory to store environment variables:
+   ```bash
+   npm install
+   ```
 
-```bash
+4. **Navigate to the Backend Directory**
+
+   ```bash
+   cd ../backend
+   ```
+
+5. **Install Backend Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+---
+
+## Environment Variables
+
+### Backend
+
+Create a `.env` file in the `backend/` directory with the following variables:
+
+```env
 PORT=8080
 DATABASE_HOST=db
 DATABASE_PORT=5432
@@ -127,588 +167,301 @@ DATABASE_PASSWORD=your_db_password
 DATABASE_NAME=chat_tracker
 ```
 
-**Explanation of Variables:**
+### Frontend
 
-- `PORT`: The port on which the application will run on the host machine. **Changed to `8080` to avoid conflicts with Apple services.**
-- `DATABASE_HOST`: The hostname for the PostgreSQL service. **Set to `db` as defined in `docker-compose.yml`.**
-- `DATABASE_PORT`: The port PostgreSQL listens on within the Docker network. **Default is `5432`.**
-- `DATABASE_USER`: PostgreSQL username.
-- `DATABASE_PASSWORD`: PostgreSQL password.
-- `DATABASE_NAME`: Name of the PostgreSQL database.
+Create a `.env` file in the `frontend/` directory with the following variables:
 
-> **Important:** Replace `your_db_user` and `your_db_password` with secure credentials of your choice.
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+```
 
-### 3. Docker Setup
-
-Ensure Docker and Docker Compose are installed and running on your machine. No additional setup is required beyond the provided `Dockerfile` and `docker-compose.yml`.
+**Note:** Replace `your_db_user` and `your_db_password` with your desired PostgreSQL credentials.
 
 ---
 
 ## Running the Application
 
-### 1. Initialize the Database
+The application is containerized using Docker, allowing for easy setup and deployment.
 
-Since you've chosen **Option 1** (reinitialize the database by removing the existing volume), ensure that your `db-init/init.sql` contains all necessary table creations and extensions.
+### Using Docker Compose
 
-**`db-init/init.sql`:**
-
-```sql
--- Enable pgcrypto for gen_random_uuid()
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
--- Create Projects Table
-CREATE TABLE IF NOT EXISTS projects (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create Users Table
-CREATE TABLE IF NOT EXISTS users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create Messages Table with Foreign Keys
-CREATE TABLE IF NOT EXISTS messages (
-  id SERIAL PRIMARY KEY,
-  project_id UUID NOT NULL,
-  user_id UUID NOT NULL,
-  message TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-```
-
-### 2. Remove Existing Docker Volumes (Data Loss Warning)
-
-**⚠️ Warning:** This step **will delete all existing data** in your PostgreSQL database. Proceed only if you understand and accept the data loss.
-
-```bash
-docker-compose down
-docker volume rm chat-tracker-api_db-data
-```
-
-> **Note:** Replace `chat-tracker-api_db-data` with the actual volume name if different. List all volumes using:
-
-```bash
-docker volume ls
-```
-
-### 3. Start Docker Containers
-
-Build and start the Docker containers using Docker Compose:
-
-```bash
-docker-compose up --build
-```
-
-**Explanation:**
-
-- `--build`: Rebuilds the Docker images based on the latest configurations and code changes.
-- The application will now be accessible at `http://localhost:8080`.
-
-### 4. Verify the Setup
-
-- **Health Check:** Visit `http://localhost:8080` in your browser or use `curl`:
-
-  ```bash
-  curl http://localhost:8080
-  ```
-
-  **Expected Response:**
-
-  ```
-  Chat Tracker API is running.
-  ```
-
-- **Database Verification:** Connect to the PostgreSQL container and verify table creation:
-
-  ```bash
-  docker-compose exec db psql -U your_db_user -d chat_tracker
-  ```
-
-  Once in the `psql` shell, list the tables:
-
-  ```sql
-  \dt
-  ```
-
-  **Expected Output:**
-
-  ```
-           List of relations
-   Schema |      Name      | Type  | Owner
-  --------+----------------+-------+--------
-   public | messages       | table | your_db_user
-   public | projects       | table | your_db_user
-   public | users          | table | your_db_user
-  (3 rows)
-  ```
-
-  Exit the `psql` shell:
-
-  ```sql
-  \q
-  ```
-
----
-
-## API Documentation
-
-The Chat Tracker API provides endpoints to manage **Projects**, **Users**, and **Messages**. Below is a comprehensive guide to each endpoint, including request and response examples.
-
-### Base URL
-
-```
-http://localhost:8080/api
-```
-
----
-
-### Projects
-
-#### 1. Create a New Project
-
-- **Endpoint:** `POST /api/projects`
-- **Description:** Creates a new project.
-- **Request Body:**
-
-  ```json
-  {
-    "name": "Project Alpha"
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "name": "Project Alpha",
-    "created_at": "2024-12-15T12:34:56.789Z"
-  }
-  ```
-
-#### 2. Get All Projects
-
-- **Endpoint:** `GET /api/projects`
-- **Description:** Retrieves a list of all projects.
-- **Response:**
-
-  ```json
-  [
-    {
-      "id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-      "name": "Project Alpha",
-      "created_at": "2024-12-15T12:34:56.789Z"
-    },
-    {
-      "id": "d1e2f3a4-5b6c-7d8e-9f0a-1b2c3d4e5f6a",
-      "name": "Project Beta",
-      "created_at": "2024-12-16T09:20:30.123Z"
-    }
-    // ... other projects
-  ]
-  ```
-
-#### 3. Get a Project by ID
-
-- **Endpoint:** `GET /api/projects/:id`
-- **Description:** Retrieves a specific project by its ID.
-- **Response:**
-
-  ```json
-  {
-    "id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "name": "Project Alpha",
-    "created_at": "2024-12-15T12:34:56.789Z"
-  }
-  ```
-
-#### 4. Update a Project by ID
-
-- **Endpoint:** `PUT /api/projects/:id`
-- **Description:** Updates the name of a specific project.
-- **Request Body:**
-
-  ```json
-  {
-    "name": "Project Alpha Updated"
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "name": "Project Alpha Updated",
-    "created_at": "2024-12-15T12:34:56.789Z"
-  }
-  ```
-
-#### 5. Delete a Project by ID
-
-- **Endpoint:** `DELETE /api/projects/:id`
-- **Description:** Deletes a specific project and all associated messages.
-- **Response:**
-
-  ```json
-  {
-    "message": "Project deleted successfully."
-  }
-  ```
-
----
-
-### Users
-
-#### 1. Create a New User
-
-- **Endpoint:** `POST /api/users`
-- **Description:** Creates a new user.
-- **Request Body:**
-
-  ```json
-  {
-    "name": "John Doe"
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "name": "John Doe",
-    "created_at": "2024-12-15T12:35:00.123Z"
-  }
-  ```
-
-#### 2. Get All Users
-
-- **Endpoint:** `GET /api/users`
-- **Description:** Retrieves a list of all users.
-- **Response:**
-
-  ```json
-  [
-    {
-      "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-      "name": "John Doe",
-      "created_at": "2024-12-15T12:35:00.123Z"
-    },
-    {
-      "id": "f6e5d4c3-b2a1-0f9e-8d7c-6b5a4e3d2c1b",
-      "name": "Jane Smith",
-      "created_at": "2024-12-16T10:15:20.456Z"
-    }
-    // ... other users
-  ]
-  ```
-
-#### 3. Get a User by ID
-
-- **Endpoint:** `GET /api/users/:id`
-- **Description:** Retrieves a specific user by their ID.
-- **Response:**
-
-  ```json
-  {
-    "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "name": "John Doe",
-    "created_at": "2024-12-15T12:35:00.123Z"
-  }
-  ```
-
-#### 4. Update a User by ID
-
-- **Endpoint:** `PUT /api/users/:id`
-- **Description:** Updates the name of a specific user.
-- **Request Body:**
-
-  ```json
-  {
-    "name": "Johnathan Doe"
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "name": "Johnathan Doe",
-    "created_at": "2024-12-15T12:35:00.123Z"
-  }
-  ```
-
-#### 5. Delete a User by ID
-
-- **Endpoint:** `DELETE /api/users/:id`
-- **Description:** Deletes a specific user and all associated messages.
-- **Response:**
-
-  ```json
-  {
-    "message": "User deleted successfully."
-  }
-  ```
-
----
-
-### Messages
-
-#### 1. Create a New Message
-
-- **Endpoint:** `POST /api/messages`
-- **Description:** Creates a new chat message linked to a project and user.
-- **Request Body:**
-
-  ```json
-  {
-    "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "user_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "message": "Hello, this is a test message."
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": 1,
-    "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "user_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "message": "Hello, this is a test message.",
-    "created_at": "2024-12-15T12:35:10.456Z"
-  }
-  ```
-
-#### 2. Get All Messages for a Project
-
-- **Endpoint:** `GET /api/messages/project/:projectId`
-- **Description:** Retrieves all messages associated with a specific project.
-- **Response:**
-
-  ```json
-  [
-    {
-      "id": 1,
-      "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-      "user_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-      "message": "Hello, this is a test message.",
-      "created_at": "2024-12-15T12:35:10.456Z"
-    },
-    {
-      "id": 2,
-      "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-      "user_id": "f6e5d4c3-b2a1-0f9e-8d7c-6b5a4e3d2c1b",
-      "message": "Another message in Project Alpha.",
-      "created_at": "2024-12-15T13:00:00.789Z"
-    }
-    // ... other messages
-  ]
-  ```
-
-#### 3. Get a Single Message by ID
-
-- **Endpoint:** `GET /api/messages/:id`
-- **Description:** Retrieves a specific message by its ID.
-- **Response:**
-
-  ```json
-  {
-    "id": 1,
-    "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "user_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "message": "Hello, this is a test message.",
-    "created_at": "2024-12-15T12:35:10.456Z"
-  }
-  ```
-
-#### 4. Update a Message by ID
-
-- **Endpoint:** `PUT /api/messages/:id`
-- **Description:** Updates the content of a specific message.
-- **Request Body:**
-
-  ```json
-  {
-    "message": "Updated message content."
-  }
-  ```
-
-- **Response:**
-
-  ```json
-  {
-    "id": 1,
-    "project_id": "e7f3c3e0-9c4f-4f5e-8b6a-2f4b9a6d8e72",
-    "user_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    "message": "Updated message content.",
-    "created_at": "2024-12-15T12:35:10.456Z"
-  }
-  ```
-
-#### 5. Delete a Message by ID
-
-- **Endpoint:** `DELETE /api/messages/:id`
-- **Description:** Deletes a specific message.
-- **Response:**
-
-  ```json
-  {
-    "message": "Message deleted successfully."
-  }
-  ```
-
----
-
-## Database Initialization
-
-The PostgreSQL database is initialized using the `init.sql` script located in the `db-init/` directory. This script sets up the necessary tables and extensions required by the application.
-
-### Initialization Steps:
-
-1. **Reinitialize the Database (Option 1):**
-
-   If you've made changes to the database schema and opted to reinitialize (as per your previous decision), follow these steps:
+1. **Navigate to the Root Directory**
 
    ```bash
-   docker-compose down
-   docker volume rm chat-tracker-api_db-data
+   cd chat-tracker-api
+   ```
+
+2. **Build and Start the Containers**
+
+   ```bash
    docker-compose up --build
    ```
 
-   - **`docker-compose down`**: Stops and removes the containers.
-   - **`docker volume rm`**: Removes the existing PostgreSQL data volume, triggering a fresh initialization.
-   - **`docker-compose up --build`**: Rebuilds and starts the containers, applying the `init.sql` script.
+   **Explanation:**
+   
+   - **Backend (`app`):** Builds the Node.js backend and exposes it on port `8080`.
+   - **Frontend (`frontend`):** Builds the React frontend using Vite and serves it via Nginx on port `3000`.
+   - **Database (`db`):** Sets up a PostgreSQL database on port `5432` and initializes it with `init.sql`.
 
-2. **Verify Initialization:**
+3. **Verify the Setup**
 
-   After running the above commands, ensure that the tables have been created successfully by connecting to the PostgreSQL container:
-
-   ```bash
-   docker-compose exec db psql -U your_db_user -d chat_tracker
-   ```
-
-   In the `psql` shell, list the tables:
-
-   ```sql
-   \dt
-   ```
-
-   You should see `projects`, `users`, and `messages` tables listed.
-
-   Exit the `psql` shell:
-
-   ```sql
-   \q
-   ```
-
-> **Note:** The initialization script runs **only once**—during the first setup when the data volume is empty. Subsequent `docker-compose up` commands will not re-run the script unless the data volume is removed.
+   - **Frontend:** Visit [http://localhost:3000](http://localhost:3000) to access the Chat Tracker frontend.
+   - **Backend Health Check:** Visit [http://localhost:8080](http://localhost:8080) or use `curl`:
+   
+     ```bash
+     curl http://localhost:8080
+     ```
+     
+     **Expected Response:**
+     
+     ```
+     Chat Tracker API is running.
+     ```
 
 ---
 
-## Troubleshooting
+## Development Mode
 
-### Common Issues & Solutions
+For a better development experience with hot-reloading and live updates, you can run the frontend and backend separately without Docker.
 
-#### 1. **Port Conflict Error**
+### Backend
 
-**Error Message:**
+1. **Navigate to the Backend Directory**
 
-```
-Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:5432 -> 0.0.0.0:0: listen tcp 0.0.0.0:5432: bind: address already in use
-```
+   ```bash
+   cd backend
+   ```
 
-**Solution:**
+2. **Start the Backend Server**
 
-- **Change Host Port Mapping:**
+   ```bash
+   npm run dev
+   ```
 
-  If port `5432` is occupied on your host machine, modify the `docker-compose.yml` to map PostgreSQL to a different host port (e.g., `5433:5432`).
+   **Note:** Ensure that the `.env` file is properly configured.
 
-  ```yaml
-  services:
-    db:
-      image: postgres:14-alpine
-      ports:
-        - "5433:5432"  # Changed from "5432:5432" to "5433:5432"
-      environment:
-        POSTGRES_USER: your_db_user
-        POSTGRES_PASSWORD: your_db_password
-        POSTGRES_DB: chat_tracker
-      volumes:
-        - db-data:/var/lib/postgresql/data
-        - ./db-init:/docker-entrypoint-initdb.d
-      restart: unless-stopped
-  ```
+### Frontend
 
-- **Update `.env` File (If Necessary):**
+1. **Navigate to the Frontend Directory**
 
-  If you need to access PostgreSQL from your host machine, adjust the `DATABASE_PORT` accordingly. However, within the Docker network, the PostgreSQL service still listens on `5432`.
+   ```bash
+   cd frontend
+   ```
 
-  ```env
-  DATABASE_PORT=5433
-  ```
+2. **Start the Frontend Development Server**
 
-#### 2. **Database Connection Issues**
+   ```bash
+   npm run dev
+   ```
 
-**Symptom:** Application cannot connect to the PostgreSQL database.
+3. **Access the Application**
 
-**Solution:**
+   Visit [http://localhost:5173](http://localhost:5173) to view the frontend with hot-reloading enabled.
 
-- **Verify Environment Variables:**
+---
 
-  Ensure that `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, and `DATABASE_NAME` in your `.env` file match the configurations in `docker-compose.yml`.
+## Frontend Overview
 
-- **Check Docker Containers Status:**
+The frontend is built using **React** with **TypeScript** and **Vite** for rapid development. It utilizes **Material-UI (MUI)** for styling and components, ensuring a responsive and modern user interface.
 
-  ```bash
-  docker-compose ps
-  ```
+### Available Components
 
-  Ensure both `app` and `db` services are `Up`.
+1. **ProjectList**
 
-- **Inspect Logs:**
+   - **Path:** `frontend/src/components/Projects/ProjectList.tsx`
+   - **Description:** Manage projects with CRUD operations.
+   
+2. **UserList**
 
-  ```bash
-  docker-compose logs db
-  docker-compose logs app
-  ```
+   - **Path:** `frontend/src/components/Users/UserList.tsx`
+   - **Description:** Manage users with CRUD operations.
+   
+3. **MessageList**
 
-  Look for any error messages that can help diagnose the issue.
+   - **Path:** `frontend/src/components/Messages/MessageList.tsx`
+   - **Description:** Manage messages linked to projects and users with CRUD operations.
 
-#### 3. **Application Not Responding on Port 8080**
+### API Service
 
-**Solution:**
+- **Path:** `frontend/src/services/api.ts`
+- **Description:** Centralized Axios instance for making HTTP requests to the backend API.
 
-- **Ensure Docker Containers Are Running:**
+### Type Definitions
 
-  ```bash
-  docker-compose up --build
-  ```
+- **Path:** `frontend/src/types.ts`
+- **Description:** TypeScript interfaces defining the structure of Projects, Users, and Messages.
 
-- **Check Port Mapping:**
+---
 
-  Confirm that `8080` on the host is mapped to `5000` in the container in `docker-compose.yml`:
+## Backend Overview
 
-  ```yaml
-  services:
-    app:
-      build: .
-      ports:
-        - "8080:5000"  # External port changed to 8080
-      ...
-  ```
+The backend is built using **Node.js** and **Express** with **TypeScript**, providing a robust and type-safe RESTful API to manage Projects, Users, and Messages.
 
-- **Verify Firewall Settings:**
+### API Endpoints
 
-  Ensure that your firewall allows traffic on port `8080`.
+#### Projects
+
+- **Create Project**
+
+  - **Endpoint:** `POST /api/projects`
+  - **Body:**
+    ```json
+    {
+      "name": "Project Name"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "uuid",
+      "name": "Project Name",
+      "created_at": "timestamp"
+    }
+    ```
+
+- **Get All Projects**
+
+  - **Endpoint:** `GET /api/projects`
+  - **Response:** Array of Project objects.
+
+- **Get Project by ID**
+
+  - **Endpoint:** `GET /api/projects/:id`
+  - **Response:** Project object.
+
+- **Update Project**
+
+  - **Endpoint:** `PUT /api/projects/:id`
+  - **Body:**
+    ```json
+    {
+      "name": "Updated Project Name"
+    }
+    ```
+  - **Response:** Updated Project object.
+
+- **Delete Project**
+
+  - **Endpoint:** `DELETE /api/projects/:id`
+  - **Response:**
+    ```json
+    {
+      "message": "Project deleted successfully."
+    }
+    ```
+
+#### Users
+
+- **Create User**
+
+  - **Endpoint:** `POST /api/users`
+  - **Body:**
+    ```json
+    {
+      "name": "User Name"
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": "uuid",
+      "name": "User Name",
+      "created_at": "timestamp"
+    }
+    ```
+
+- **Get All Users**
+
+  - **Endpoint:** `GET /api/users`
+  - **Response:** Array of User objects.
+
+- **Get User by ID**
+
+  - **Endpoint:** `GET /api/users/:id`
+  - **Response:** User object.
+
+- **Update User**
+
+  - **Endpoint:** `PUT /api/users/:id`
+  - **Body:**
+    ```json
+    {
+      "name": "Updated User Name"
+    }
+    ```
+  - **Response:** Updated User object.
+
+- **Delete User**
+
+  - **Endpoint:** `DELETE /api/users/:id`
+  - **Response:**
+    ```json
+    {
+      "message": "User deleted successfully."
+    }
+    ```
+
+#### Messages
+
+- **Create Message**
+
+  - **Endpoint:** `POST /api/messages`
+  - **Body:**
+    ```json
+    {
+      "project_id": "project_uuid",
+      "user_id": "user_uuid",
+      "message": "Your message here."
+    }
+    ```
+  - **Response:**
+    ```json
+    {
+      "id": 1,
+      "project_id": "project_uuid",
+      "user_id": "user_uuid",
+      "message": "Your message here.",
+      "created_at": "timestamp"
+    }
+    ```
+
+- **Get All Messages**
+
+  - **Endpoint:** `GET /api/messages`
+  - **Response:** Array of Message objects.
+
+- **Get Message by ID**
+
+  - **Endpoint:** `GET /api/messages/:id`
+  - **Response:** Message object.
+
+- **Get Messages by Project ID**
+
+  - **Endpoint:** `GET /api/messages/project/:projectId`
+  - **Response:** Array of Message objects related to the specified project.
+
+- **Update Message**
+
+  - **Endpoint:** `PUT /api/messages/:id`
+  - **Body:**
+    ```json
+    {
+      "project_id": "project_uuid",
+      "user_id": "user_uuid",
+      "message": "Updated message here."
+    }
+    ```
+  - **Response:** Updated Message object.
+
+- **Delete Message**
+
+  - **Endpoint:** `DELETE /api/messages/:id`
+  - **Response:**
+    ```json
+    {
+      "message": "Message deleted successfully."
+    }
+    ```
 
 ---
 
@@ -716,7 +469,7 @@ Error response from daemon: Ports are not available: exposing port TCP 0.0.0.0:5
 
 Contributions are welcome! If you have suggestions, improvements, or bug fixes, feel free to open an issue or submit a pull request.
 
-### Steps to Contribute:
+### Steps to Contribute
 
 1. **Fork the Repository**
 
@@ -752,8 +505,12 @@ This project is licensed under the [MIT License](LICENSE).
 
 - [Express.js](https://expressjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Docker](https://www.docker.com/)
+- [Vite](https://vitejs.dev/)
+- [React](https://reactjs.org/)
+- [Material-UI (MUI)](https://mui.com/)
+- [Axios](https://axios-http.com/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
 - [pg](https://node-postgres.com/)
 - [dotenv](https://github.com/motdotla/dotenv)
 
@@ -766,3 +523,53 @@ For any inquiries or support, please contact [your.email@example.com](mailto:you
 ---
 
 **Happy Coding! 🚀**
+
+---
+
+## Additional Notes
+
+### Frontend Development
+
+- **Running in Development Mode:**
+
+  If you prefer to run the frontend separately for development purposes, navigate to the `frontend/` directory and start the development server:
+
+  ```bash
+  cd frontend
+  npm run dev
+  ```
+
+  This will start the Vite development server with hot-reloading on [http://localhost:5173](http://localhost:5173).
+
+### Backend Development
+
+- **Running the Backend Separately:**
+
+  Similarly, you can run the backend independently:
+
+  ```bash
+  cd backend
+  npm run dev
+  ```
+
+  This will start the backend server on [http://localhost:8080](http://localhost:8080).
+
+### API Service
+
+The frontend uses a centralized API service (`frontend/src/services/api.ts`) configured with Axios to communicate with the backend API. Ensure that the `VITE_API_BASE_URL` in the frontend's `.env` file matches the backend's address.
+
+### Docker Networking
+
+In the provided `nginx.conf` for the frontend, API requests are proxied to the backend service (`app:8080`). Ensure that the service names in `docker-compose.yml` match when configuring proxying or environment variables.
+
+### Testing
+
+Implement unit and integration tests for both frontend and backend to ensure reliability and maintainability. Consider using tools like **Jest**, **React Testing Library**, and **Supertest**.
+
+### Continuous Integration/Continuous Deployment (CI/CD)
+
+Set up CI/CD pipelines using platforms like **GitHub Actions**, **GitLab CI**, or **Jenkins** to automate testing and deployment processes.
+
+---
+
+Feel free to reach out if you encounter any issues or need further assistance with the setup!

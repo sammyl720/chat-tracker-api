@@ -4,7 +4,7 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"  # External port changed to 8080
+      - "8080:8080"  # Backend API exposed on port 8080
     depends_on:
       - db
     environment:
@@ -14,10 +14,17 @@ services:
       - DATABASE_USER=your_db_user
       - DATABASE_PASSWORD=your_db_password
       - DATABASE_NAME=chat_tracker
-    # Remove the following volumes to prevent overwriting the built 'dist' folder
-    # volumes:
-    #   - .:/app
-    #   - /app/node_modules
+    # Removed volumes to prevent overwriting 'dist' folder
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"  # Frontend served on port 3000
+    depends_on:
+      - app
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080/api
     restart: unless-stopped
 
   db:

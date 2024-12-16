@@ -14,10 +14,24 @@ services:
       - DATABASE_USER=your_db_user
       - DATABASE_PASSWORD=your_db_password
       - DATABASE_NAME=chat_tracker
+    # Mount volumes for live-reloading
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev  # Use a development command with hot-reloading
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:5173"  # Vite's dev server runs on 5173
+    depends_on:
+      - app
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
     restart: unless-stopped
 
   db:
