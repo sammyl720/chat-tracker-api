@@ -4,12 +4,17 @@ FROM node:18-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+# Copy frontend package files
+COPY frontend/package.json frontend/package-lock.json ./
+
 # Install dependencies
-COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy source code
-COPY . .
+# Copy frontend source code
+COPY frontend/src ./src
+COPY frontend/public ./public
+COPY frontend/vite.config.ts ./
+COPY frontend/tsconfig.json ./
 
 # Build the React app
 RUN npm run build
@@ -21,9 +26,9 @@ FROM nginx:alpine
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/
+COPY frontend/nginx.conf /etc/nginx/conf.d/
 
-# Copy build output from builder stage
+# Copy build output from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80
