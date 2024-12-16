@@ -6,12 +6,14 @@ import {
   getMessageById,
   updateMessage,
   deleteMessage,
+  getAllMessages,
 } from '../controllers/messageController.js';
 
 const router = Router();
 
 // Create a new message
 router.post('/', createMessage);
+router.get('/', getAllMessages);
 
 // Get all messages by project ID
 router.get('/project/:projectId', getMessagesByProjectId);

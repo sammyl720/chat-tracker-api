@@ -25,16 +25,40 @@ export const createMessage = async (req: Request, res: Response) => {
 // Get all messages by project ID
 export const getMessagesByProjectId = async (req: Request, res: Response) => {
   const { projectId } = req.params;
-
   try {
-    const result = await pool.query(
-      'SELECT * FROM messages WHERE project_id = $1 ORDER BY created_at DESC',
+    const messages = await pool.query(
+      `
+      SELECT messages.id, messages.project_id, messages.user_id, messages.message, messages.created_at, users.name as user_name
+      FROM messages
+      JOIN users ON messages.user_id = users.id
+      WHERE messages.project_id = $1
+      ORDER BY messages.created_at DESC
+      `,
       [projectId]
     );
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error('Error fetching messages:', err);
-    res.status(500).json({ error: 'Internal server error.' });
+    res.json(messages.rows);
+  } catch (error) {
+    console.error('Error fetching messages by project ID:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Optionally, if you want an endpoint to get all messages:
+export const getAllMessages = async (req: Request, res: Response) => {
+  try {
+    const messages = await pool.query(
+      `
+      SELECT messages.id, messages.project_id, messages.user_id, messages.message, messages.created_at, users.name as user_name, projects.name as project_name
+      FROM messages
+      JOIN users ON messages.user_id = users.id
+      JOIN projects ON messages.project_id = projects.id
+      ORDER BY messages.created_at DESC
+      `
+    );
+    res.json(messages.rows);
+  } catch (error) {
+    console.error('Error fetching all messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
