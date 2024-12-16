@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -10,11 +10,11 @@ COPY frontend/package.json frontend/package-lock.json ./
 # Install dependencies
 RUN npm install
 
-# Copy frontend source code
+# Copy frontend source code and public assets
+COPY frontend/tsconfig.json frontend/vite.config.ts ./
+COPY frontend/index.html ./
 COPY frontend/src ./src
 COPY frontend/public ./public
-COPY frontend/vite.config.ts ./
-COPY frontend/tsconfig.json ./
 
 # Build the React app
 RUN npm run build
